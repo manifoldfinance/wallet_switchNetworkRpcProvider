@@ -1,25 +1,22 @@
 ---
-eip: {{ eip }}
+eip: #tbd
 title: Wallet Switch Ethereum Chain RPC Method (`wallet_switchNetworkRpcProvider`)
+description: An RPC method for switching the wallet's active Ethereum chain.
 author: Sam Bacha (@sambacha)
 discussions-to:
-status: Draft
+status: draft, v0.2.0
 type: Standards Track
 category: Interface
 created: 2022-03-24
 requires: 155, 695
 ---
 
-## Simple Summary
-
-An RPC method for switching the wallet's active Ethereum chain.
-
-## Abstract
+# Abstract
 
 The `wallet_switchNetworkRpcProvider` RPC method allows Ethereum applications ("dapps") to request that the wallet switches its active RPC Provider backend if the wallet has a concept thereof.
 
-The caller must specify a chain ID.
-The caller must specify a valid URL for the RPC Endpoint
+The caller MUST specify a chain ID.
+The caller MUST specify a valid URL for the RPC Endpoint
 
 The wallet application may arbitrarily refuse or accept the request.
 A status code of `200` is returned if the active RPC was successfully switched, 
