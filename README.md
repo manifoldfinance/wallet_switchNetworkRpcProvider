@@ -2,7 +2,7 @@
 eip: #tbd
 title: Wallet Switch Ethereum Chain RPC Method (`wallet_switchNetworkRpcProvider`)
 description: An RPC method for switching the wallet's active RPC Provider
-author: Sam Bacha (@sambacha)
+author: Sam Bacha (@sambacha) <Additional Contributors HERE>
 discussions-to:
 status: draft, v0.3.0
 type: Standards Track
@@ -13,94 +13,125 @@ requires: 86, 155, 695, 1193
 
 # Abstract
 
-The `wallet_switchNetworkRpcProvider` RPC method allows Ethereum applications ("dapps") to request that the wallet switches its active RPC Provider backend if the wallet has a concept thereof.
+The `wallet_switchNetworkRpcProvider` RPC method allows Ethereum applications
+("dapps") to request that the wallet switches its active RPC Provider backend if
+the wallet has a concept thereof.
 
-The caller MUST specify a chain ID.
-The caller MUST specify a valid URL for the RPC Endpoint
+The caller MUST specify a chain ID. The caller MUST specify a valid URL for the
+RPC Endpoint
 
-The wallet application **may not** arbitrarily refuse or accept the request.
-A status code of `200` is returned if the active RPC was successfully switched, 
-A status code of `[TODO]`  otherwise.
+The wallet application **may not** arbitrarily refuse or accept the request. A
+status code of `200` is returned if the active RPC was successfully switched, A
+status code of `[TODO]` otherwise.
 
-> Important cautions for implementers of this method are included in the [Security Considerations](#security-considerations) section.
+> Important cautions for implementers of this method are included in the
+> [Security Considerations](#security-considerations) section.
 
 ## Motivation
 
-The purpose `wallet_switchNetworkRpcProvider` is to provide dapps with a way of requesting to switch the wallet's active chain, which they would otherwise have to ask the user to do manually. 
+The purpose `wallet_switchNetworkRpcProvider` is to provide dapps with a way of
+requesting to switch the wallet's active chain, which they would otherwise have
+to ask the user to do manually.
 
 - Account Abstraction via private mempool (EIP4339)
-- Fallback provider for RPC Connectivity issues (at the Server side) (Example: Infura Service Outage)
-- Failover provider for RPC Connectivity issues (as the Client side) (Example: Smartphone connectivity issues)
-- Providing Transaction Privacy via RPC Provider endpoint (e.g. Flashbots, OpenMEV, EdenNetwork, etc)
+- Fallback provider for RPC Connectivity issues (at the Server side) (Example:
+  Infura Service Outage)
+- Failover provider for RPC Connectivity issues (as the Client side) (Example:
+  Smartphone connectivity issues)
+- Providing Transaction Privacy via RPC Provider endpoint (e.g. Flashbots,
+  OpenMEV, EdenNetwork, etc)
 
 ### Existing EIP Specifications do not service this end
 
-`updatedEthereumChain` specificies that the "...Wallet should default the `rpcUrl` to **any existing endpoints matching a chainId known previously to the wallet**, otherwise it will use the provided rpcUrl as a fallback."
+`updatedEthereumChain` specifies that the "...Wallet should default the `rpcUrl`
+to **any existing endpoints matching a chainId known previously to the wallet**,
+otherwise it will use the provided rpcUrl as a fallback."
 
-`wallet_switchNetworkRpcProvider` intentionally and explicitly is purely concerned with switching the active RPC endpoints, regardless of any other metadata associated therewith.
-
+`wallet_switchNetworkRpcProvider` intentionally and explicitly is purely
+concerned with switching the active RPC endpoints, regardless of any other
+metadata associated therewith.
 
 ## Rationale
 
-All dapps require the user to interact with one or more Ethereum chains in order to function.
-Some wallets only supports interacting with one chain at a time.
-We call this the wallet's "active chain".
+All dapps require the user to interact with one or more Ethereum chains in order
+to function. Some wallets only supports interacting with one chain at a time. We
+call this the wallet's "active chain".
 
 The Wallet's "active chain" has an "active RPC Provider"
 
-`wallet_switchNetworkRpcProvider` enables dapps to request that the wallet switches its active RPC connection provider to whichever one is required by the dapp.
+`wallet_switchNetworkRpcProvider` enables dapps to request that the wallet
+switches its active RPC connection provider to whichever one is required by the
+dapp.
 
-This enables UX improvements for both dapps and wallets as discussed in the motivation section.
+This enables UX improvements for both dapps and wallets as discussed in the
+motivation section.
 
-The method accepts am object parameter to allow for future extensibility at virtually no cost to implementers and consumers.[^4]
+The method accepts am object parameter to allow for future extensibility at
+virtually no cost to implementers and consumers.[^4]
 
 ## Specification
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC-2119](https://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in [RFC-2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 ### `wallet_switchNetworkRpcProvider`
 
-The method accepts an object parameter with defined fields[^parameters](##Parameters)
-The method returns `null` if the wallet switched its active chain, and an error otherwise.
+The method accepts an object parameter with defined fields
+[^parameters](##Parameters) The method returns `null` if the wallet switched its
+active chain, and an error otherwise.
 
 The method presupposes that the wallet has a concept of a single "active chain".
-The active chain is defined as the chain that the wallet is forwarding RPC requests to.
+The active chain is defined as the chain that the wallet is forwarding RPC
+requests to.
 
-1. Wallets **MUST** switch to the requested RPC URL if the existing ChainID is known to the wallet. 
-  - A dialog box requesting a user to add this to their 'address book'/etc is *recommended* to be shown.
+1. Wallets **MUST** switch to the requested RPC URL if the existing ChainID is
+   known to the wallet.
 
-2. Wallets **MUST NOT** reject the switch to the new RPC Provider URL if the ChainID is known to the wallet.
+- A dialog box requesting a user to add this to their 'address book'/etc is
+  _recommended_ to be shown.
 
-3. If a field does not meet the requirements of this specification, the wallet **MUST** reject the request.
+2. Wallets **MUST NOT** reject the switch to the new RPC Provider URL if the
+   ChainID is known to the wallet.
+
+3. If a field does not meet the requirements of this specification, the wallet
+   **MUST** reject the request.
 
 4. The wallet application **MUST NOT** arbitrarily refuse or accept the request.
 
 #### Parameters
 
 - `chainId`
-    * REQUIRED
-  - **MUST** specify the integer ID of the chain as a hexadecimal string, per the [`eth_chainId`](./eip-695.md) Ethereum RPC method.
-  - The chain ID **MUST** be known to the wallet.
-  - The wallet is **REQUIRED** be able to switch to the specified chain and service RPC requests to it. It can not reject the request based on exclusivity of pairing providers with networks. 
-  - This exclusivity means wallets **MUST** allow users to be able to configure **ANY** ChainID with an RPC Provider of their choice.
+
+  - REQUIRED
+
+  * **MUST** specify the integer ID of the chain as a hexadecimal string, per
+    the [`eth_chainId`](./eip-695.md) Ethereum RPC method.
+  * The chain ID **MUST** be known to the wallet.
+  * The wallet is **REQUIRED** be able to switch to the specified chain and
+    service RPC requests to it. It can not reject the request based on
+    exclusivity of pairing providers with networks.
+  * This exclusivity means wallets **MUST** allow users to be able to configure
+    **ANY** ChainID with an RPC Provider of their choice.
 
 - `rpcUrl`
-    * REQUIRED
-    * can't have user@password in rpc url
+
+  - REQUIRED
+  - can't have user@password in RPC url
 
 - `flushPending`:
-    * REQUIRED
-    * can't have user@password in rpc url
 
+  - REQUIRED
+  - can't have user@password in RPC url
 
-- `setDefault`: 
-    * OPTIONAL
-    * optional field for dapp's to automatiacally switch when logged into 
-
+- `setDefault`:
+  - OPTIONAL
+  - optional field for dapp's to automatically switch when logged into
 
 #### Parameters
 
-`wallet_switchNetworkRpcProvider` accepts an object parameter, specified by the following TypeScript interface:
+`wallet_switchNetworkRpcProvider` accepts an object parameter, specified by the
+following TypeScript interface:
 
 ```typescript
 interface SwitchEthereumChainParameter {
@@ -113,13 +144,16 @@ interface SwitchEthereumChainParameter {
 
 #### Returns
 
-The method **MUST** return `null` if the request was successful, and an error otherwise.
+The method **MUST** return `null` if the request was successful, and an error
+otherwise.
 
-If the wallet does not have a concept of an active RPC Provider, the wallet **MUST** reject the request.
+If the wallet does not have a concept of an active RPC Provider, the wallet
+**MUST** reject the request.
 
 ### Examples
 
-These examples use JSON-RPC, but the method could be implemented using other RPC protocols.
+These examples use JSON-RPC, but the method could be implemented using other RPC
+protocols.
 
 To switch to Mainnet:
 
@@ -153,25 +187,31 @@ To switch to the Goerli test chain:
 }
 ```
 
-
 ## Backwards Compatibility
 
-Does not introduce backwards incompatibilities with existing `wallet_` methods or EIP specifications
+Does not introduce backwards incompatibilities with existing `wallet_` methods
+or EIP specifications
 
 ## Security Considerations
 
-For wallets with a concept of an active chain, switching the active chain has significant implications for pending RPC requests and the user's experience.
-If the active chain switches without the user's awareness, a dapp could induce the user to take actions for unintended chains.
+For wallets with a concept of an active chain, switching the active chain has
+significant implications for pending RPC requests and the user's experience. If
+the active chain switches without the user's awareness, a dapp could induce the
+user to take actions for unintended chains.
 
 In light of this, the wallet should:
 
-- Display a confirmation whenever a `wallet_switchNetworkRpcProvider` is received, clearly identifying the requester and the chain that will be switched to.
+- Display a confirmation whenever a `wallet_switchNetworkRpcProvider` is
+  received, clearly identifying the requester and the chain that will be
+  switched to.
 
-- The confirmation used in [EIP-1102](./eip-1102.md) may serve as a point of reference.
-- 
-- When switching the active RPC Provider, **DO NOT CANCEL** all pending RPC requests and chain-specific user confirmations unless `flushPending` is **true**.
-
+- The confirmation used in [EIP-1102](./eip-1102.md) may serve as a point of
+  reference.
+- When switching the active RPC Provider, **DO NOT CANCEL** all pending RPC
+  requests and chain-specific user confirmations unless `flushPending` is
+  **true**.
 
 ## Copyright
 
-Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+Copyright and related rights waived via
+[CC0](https://creativecommons.org/publicdomain/zero/1.0/).
