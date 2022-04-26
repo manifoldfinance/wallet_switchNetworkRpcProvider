@@ -1,0 +1,18 @@
+{
+  "name": "wallet_switchnetworkrpcprovider",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manifoldfinance/wallet_switchNetworkRpcProvider.git"
+  },
+  "keywords": [],
+  "author": "sam bacha <sam@manifoldfinance.com",
+  "license": "CC0",
+  "bugs": {
+    "url": "https://github.com/manifoldfinance/wallet_switchNetworkRpcProvider/issues"
+  },
+  "homepage": "https://github.com/manifoldfinance/wallet_switchNetworkRpcProvider#readme"
+}

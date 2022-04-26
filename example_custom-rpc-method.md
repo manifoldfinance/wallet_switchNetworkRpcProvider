@@ -4,7 +4,7 @@
 // Call implements eth_call. Executes a new message call immediately without creating a transaction on the block chain.
 func (api *APIImpl) Multicall(ctx context.Context, commonCallArgs ethapi.CallArgs, contractsWithPayloads MulticallRunlist, blockNrOrHash *rpc.BlockNumberOrHash, overrides *map[common.Address]ethapi.Account) (MulticallResult, error) {
 
-{ ... } // Code Truncated 
+{ ... } // Code Truncated
 
 		new web3._extend.Method({
 			name: 'multicall',
