@@ -16,13 +16,14 @@ requires: 86, 155, 695, 1193
 The `wallet_switchNetworkRpcProvider` RPC method allows Ethereum applications
 ("dapps") to request that the wallet switches its active RPC Provider backend if
 the wallet has a concept thereof.
-
+  
 The caller MUST specify a chain ID. The caller MUST specify a valid URL for the
 RPC Endpoint
 
 The wallet application **may not** arbitrarily refuse or accept the request. A
 status code of `200` is returned if the active RPC was successfully switched, A
 status code of `[TODO]` otherwise.
+
 
 > Important cautions for implementers of this method are included in the
 > [Security Considerations](#security-considerations) section.
@@ -111,6 +112,16 @@ requests to.
 
 4. The wallet application **MUST NOT** arbitrarily refuse the request.
 
+### Connectivity
+  
+The Provider is said to be "connected" when it can service RPC requests to at least one chain.
+
+The Provider is said to be "disconnected" when it cannot service RPC requests to any chain at all.
+
+To service an RPC request, the Provider must successfully submit the request to the remote location, and receive a response. In other words, if the Provider is unable to communicate with its Client, for example due to network issues, the Provider is disconnected.
+
+
+  
 #### Parameters
 
 > .NOTE - WORK IN PROGRESS SECTION
@@ -173,6 +184,9 @@ The method **MUST** return `null` if the request was successful, and an error ot
 
 If the wallet does not have a concept of an active RPC Provider, the wallet **MUST** reject the request.
 
+If an RPC method defined in a finalized EIP is not supported, it **SHOULD** be rejected with a 4200 error per the Provider Errors section below, or an appropriate error per the RPC method's specification.
+  
+  
 ### Examples
 
 These examples use JSON-RPC, but the method could be implemented using other RPC
