@@ -1,0 +1,24 @@
+
+   
+# -*- mode: gitignore; -*-
+/out
+/dist 
+cache/
+artifacts
+coverage/
+
+## General ##
+*~
+\#*\#
+/**/build
+.DS_Store
+node_modules
+tmp/
+_dev/
+coverage/
+
+## Binary ##
+*.zip
+*.tar
+*.tar.gz
+*.tgz

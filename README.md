@@ -75,6 +75,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
 interpreted as described in [RFC-2119](https://www.ietf.org/rfc/rfc2119.txt).
 
+Since JSON-RPC utilizes JSON, it has the same type system (described in [RFC 4627](http://www.ietf.org/rfc/rfc4627.txt)). JSON can represent four primitive types (Strings, Numbers, Booleans, and Null) and two structured types (Objects and Arrays). The term "Primitive" in this specification references any of those four primitive JSON types. The term "Structured" references either of the structured JSON types. Whenever this document refers to any JSON type, the first letter is always capitalized: Object, Array, String, Number, Boolean, Null. True and False are also capitalized.
+
+All member names exchanged between the Client and the Server that are considered for matching of any kind should be considered to be case-sensitive. The terms function, method, and procedure can be assumed to be interchangeable.
+
+The Client is defined as the origin of Request objects and the handler of Response objects.
+The Server is defined as the origin of Response objects and the handler of Request objects.
+
 ### `wallet_switchNetworkRpcProvider`
 
 The method accepts an object parameter with defined fields
@@ -85,6 +92,11 @@ The method presupposes that the wallet has a concept of a single "active chain".
 The active chain is defined as the chain that the wallet is forwarding RPC
 requests to.
 
+0. Terminology:
+   Wallets are defined as 'Clients' as defined in the Specification section
+   Dapps are defined as 'Servers' as defined in the Specification section
+
+
 1. Wallets **MUST** switch to the requested RPC URL if the existing ChainID is
    known to the wallet.
 
@@ -92,14 +104,28 @@ requests to.
   _recommended_ to be shown.
 
 2. Wallets **MUST NOT** reject the switch to the new RPC Provider URL if the
-   ChainID is known to the wallet.
+   ChainID is known to the wallet for no non-error reasoning.
 
 3. If a field does not meet the requirements of this specification, the wallet
    **MUST** reject the request.
 
-4. The wallet application **MUST NOT** arbitrarily refuse or accept the request.
+4. The wallet application **MUST NOT** arbitrarily refuse the request.
 
 #### Parameters
+
+> .NOTE - WORK IN PROGRESS SECTION
+
+| Parameter                | Description                                                                                         | Required | Values                             | Error Code | Error Message                                                            |             |
+|--------------------------|-----------------------------------------------------------------------------------------------------|----------|------------------------------------|------------|--------------------------------------------------------------------------|-------------|
+| chainId                  | specify the integer ID of the chain as a hexadecimal string, per EIP 695                            | TRUE     | 1-4503599627370476                 | -32701     | Result: eth_ChainId Result: Transport Connection Result: Malformed Input | eth_chainId |
+| rpcUrl                   | The RPC endpoint URL to target.                                                                     | TRUE     | ^$\|^[a-zA-Z_\\$][a-zA-Z_\\$0-9]*$ | -32300     | `rpcUrl` URL ADDRESS format is invalid.                                  |             |
+| rpcMethod                | The RPC method to request.                                                                          | FALSE    |                                    |            |                                                                          |             |
+| setDefault               | OPTIONAL                                                                                            | FALSE    |                                    |            |                                                                          |             |
+| setConfig                | OPTIONAL                                                                                            | FALSE    |                                    |            |                                                                          |             |
+| flushPendingTransactions | Rebroadcast all non-confirmed transactions, in order of oldest to newest, to the new rpc connection | TRUE     |                                    |            |                                                                          |             |
+| version                  |                                                                                                     | FALSE    | [0-9]+\\.[0-9]+\\.[0-9]+           |            |                                                                          |             |
+
+
 
 - `chainId`
 
@@ -122,7 +148,6 @@ requests to.
 - `flushPending`:
 
   - REQUIRED
-  - can't have user@password in RPC url
 
 - `setDefault`:
   - OPTIONAL
@@ -144,11 +169,9 @@ interface SwitchEthereumChainParameter {
 
 #### Returns
 
-The method **MUST** return `null` if the request was successful, and an error
-otherwise.
+The method **MUST** return `null` if the request was successful, and an error otherwise.
 
-If the wallet does not have a concept of an active RPC Provider, the wallet
-**MUST** reject the request.
+If the wallet does not have a concept of an active RPC Provider, the wallet **MUST** reject the request.
 
 ### Examples
 
@@ -207,11 +230,10 @@ In light of this, the wallet should:
 
 - The confirmation used in [EIP-1102](./eip-1102.md) may serve as a point of
   reference.
-- When switching the active RPC Provider, **DO NOT CANCEL** all pending RPC
-  requests and chain-specific user confirmations unless `flushPending` is
-  **true**.
+
+- When switching the active RPC Provider, **MUST NOT** cancel any pending RPC
+  requests and chain-specific user confirmations unless `flushPendingTransactions` is **TRUE**.
 
 ## Copyright
 
-Copyright and related rights waived via
-[CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).

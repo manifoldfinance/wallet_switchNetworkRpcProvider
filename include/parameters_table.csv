@@ -1,0 +1,10 @@
+Parameter,Description,Required,Values,Error Code,Error Message,
+chainId,"specify the integer ID of the chain as a hexadecimal string, per EIP 695",TRUE,1-4503599627370476,-32701,"Result: eth_ChainId
+Result: Transport Connection
+Result: Malformed Input",eth_chainId
+rpcUrl,The RPC endpoint URL to target.,TRUE,^$|^[a-zA-Z_\\$][a-zA-Z_\\$0-9]*$,-32300,`rpcUrl` URL ADDRESS format is invalid.,
+rpcMethod,The RPC method to request.,FALSE,,,,
+setDefault,OPTIONAL ,FALSE,,,,
+setConfig,OPTIONAL ,FALSE,,,,
+flushPendingTransactions,"Rebroadcast all non-confirmed transactions, in order of oldest to newest, to the new rpc connection",TRUE,,,,
+version,,FALSE,[0-9]+\\.[0-9]+\\.[0-9]+,,,
