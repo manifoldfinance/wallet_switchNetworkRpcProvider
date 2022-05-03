@@ -3,8 +3,8 @@ eip: 0000
 title: Wallet Switch Active RPC Provider Method (`wallet_switchNetworkRpcProvider`)
 description: An RPC method for switching the wallet's active RPC Provider
 author: Sam Bacha (@sambacha) <Additional Contributors HERE>
-discussions-to: [https://ethereum-magicians.org/t/eip-wallet-switchactiverpcprovider-rpc-method-for-supporting-aa-custom-rpc-methods-more/9142](https://ethereum-magicians.org/t/eip-wallet-switchactiverpcprovider-rpc-method-for-supporting-aa-custom-rpc-methods-more/9142)
-status: draft, v0.3.0
+discussions-to: https://ethereum-magicians.org/t/eip-wallet-switchactiverpcprovider-rpc-method-for-supporting-aa-custom-rpc-methods-more/9142
+status: draft, v0.4.0
 type: Standards Track
 category: Interface
 created: 2022-04-25
