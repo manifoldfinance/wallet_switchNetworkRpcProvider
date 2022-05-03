@@ -219,14 +219,17 @@ To switch to the Goerli test chain:
 ```
 
 ## Backwards Compatibility
+  
+*Tentative*: Will Examine more thoroughly 
 
 Does not introduce backwards incompatibilities with existing `wallet_` methods or EIP specifications
 
 ## Security Considerations
 
 For wallets with a concept of an active chain, switching the active chain has significant
-implications for pending RPC requests and the user's experience. If the active chain switches
-without the user's awareness, a dapp could induce the user to take actions for unintended chains.
+implications for pending RPC requests and the user's experience. This is relevant with the parameter 
+of `flushPendingTxs`. If the active RPC Provider switches the new endpoint *could* be behind the default RPC
+endpoint's 'latest' block. 
 
 In light of this, the wallet should:
 
@@ -235,8 +238,10 @@ In light of this, the wallet should:
 
 - The confirmation used in [EIP-1102](./eip-1102.md) may serve as a point of reference.
 
-- When switching the active RPC Provider, **MUST NOT** cancel any pending RPC requests and
+- When switching the active RPC Provider, **MUST NOT** cancel and/or rebroadcast any pending RPC requests and/or
   chain-specific user confirmations unless `flushPendingTransactions` is **TRUE**.
+  
+- Wallet's could provide a syncing modal until the transactions are confirmed if `flushPendingTransactions` is **FALSE**
 
 ## Copyright
 
