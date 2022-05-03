@@ -28,7 +28,7 @@ is returned if the active RPC was successfully switched, A status code of `[TODO
 ## Motivation
 
 The purpose `wallet_switchNetworkRpcProvider` is to provide dapps with a way of requesting to switch
-the wallet's active chain, which they would otherwise have to ask the user to do manually.
+the wallet's active chain's RPC Provider, which they would otherwise have to ask the user to do manually.
 
 - Account Abstraction via private mempool (EIP4339)
 - Fallback provider for RPC Connectivity issues (at the Server side) (Example: Infura Service
@@ -37,6 +37,7 @@ the wallet's active chain, which they would otherwise have to ask the user to do
   connectivity issues)
 - Providing Transaction Privacy via RPC Provider endpoint (e.g. Flashbots, OpenMEV, EdenNetwork,
   etc)
+- Accessing custom RPC Methods supported by the custom RPC Endpoint's Provider
 
 ### Existing EIP Specifications do not service this end
 
