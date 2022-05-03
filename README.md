@@ -1,6 +1,6 @@
 ---
 eip: 0000
-title: Wallet Switch Ethereum Chain RPC Method (`wallet_switchNetworkRpcProvider`)
+title: Wallet Switch Active RPC Provider Method (`wallet_switchNetworkRpcProvider`)
 description: An RPC method for switching the wallet's active RPC Provider
 author: Sam Bacha (@sambacha) <Additional Contributors HERE>
 discussions-to:
