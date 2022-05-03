@@ -5,13 +5,15 @@ participant Wallet
 participant RpcEndpoint
 
 note left of Wallet: JSON-RPC
-dApp -> Wallet: wallet_RpcEndpointSwitch(RpcEndpoint chainId, rpcUrl, flushPendingTxs)
+dApp -> Wallet: wallet_RpcEndpointSwitch: (RpcEndpoint: chainId, rpcUrl, flushPendingTxs)
 activate Wallet
 note left of RpcEndpoint : JSON-RPC
-Wallet -> RpcEndpoint: connectionSwitchRpc(RpcEndpoint chainId, rpcUrl, flushPendingTxs)
+Wallet ---> Wallet: Validate wallet_RpcEndpointSwitch
+
+Wallet -> RpcEndpoint: isValidRequest: (RpcEndpoint: chainId, rpcUrl, flushPendingTxs)
 activate RpcEndpoint
-return JsonRpcResponse, type = Result
-return privacyGroupId
+return JsonRpcResponse, (type = Result)
+return WalletResponse, (type = Result)
 
 
 @enduml
