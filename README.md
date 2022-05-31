@@ -65,10 +65,22 @@ The method accepts am object parameter to allow for future extensibility at virt
 implementers and consumers.[^4]
 
 ## Specification
+  
+IETF: 4627, 2119, 3986
 
+### Key Words
+  
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
 "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in
 [RFC-2119](https://www.ietf.org/rfc/rfc2119.txt).
+
+### ResourceURI (string)
+
+Uniform Resource Identifier as specified in RFC 3986, is used to identify and resolve endpoints. 
+Case sensitive and MUST be case normalized as per section 6.2.2.1 of RFC 3986, m
+eaning that the scheme and authority MUST be in lowercase.
+
+### JSON-RPC 
 
 Since JSON-RPC utilizes JSON, it has the same type system (described in
 [RFC 4627](http://www.ietf.org/rfc/rfc4627.txt)). JSON can represent four primitive types (Strings,
